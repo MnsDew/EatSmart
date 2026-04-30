@@ -1,6 +1,9 @@
 {
   "name": "EatSmart",
   "short_name": "EatSmart",
+  "description": "Heart-healthy nutrition — DASH, fasting, deficits, and carb cycling from EatSmart.",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",

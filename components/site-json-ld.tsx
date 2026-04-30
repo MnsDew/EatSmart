@@ -1,5 +1,6 @@
-const defaultOrigin =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://eatsmart.health";
+import { SITE_URL } from "@/lib/site-url";
+
+const defaultOrigin = SITE_URL;
 
 export function SiteJsonLd() {
   const payload = {

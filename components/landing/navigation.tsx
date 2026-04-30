@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, Menu, X } from "lucide-react";
 import { BRAND_MARK_SRC, brandMarkFrame } from "@/lib/brand-mark";
+import { AddToHomeNavButton } from "@/components/landing/add-to-home-screen";
 
 const navLinks = [
   { name: "Overview", href: "#hero" },
@@ -119,7 +120,7 @@ export function Navigation() {
           </div>
 
           <div
-            className={`mt-8 transition-all duration-500 ${
+            className={`mt-8 flex flex-col gap-3 transition-all duration-500 ${
               isMobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
             style={{ transitionDelay: isMobileMenuOpen ? "240ms" : "0ms" }}
@@ -133,6 +134,7 @@ export function Navigation() {
                 Download poster PDF
               </a>
             </Button>
+            <AddToHomeNavButton onMenuClose={() => setIsMobileMenuOpen(false)} />
           </div>
         </div>
       </div>

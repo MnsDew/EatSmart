@@ -3,10 +3,10 @@ import { Manrope, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SiteJsonLd } from "@/components/site-json-ld";
 import { HERO_VIDEO_MP4_SRC } from "@/lib/hero-video";
+import { SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://eatsmart.health";
+const siteUrl = SITE_URL;
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -83,6 +83,11 @@ export const metadata: Metadata = {
     ],
   },
   category: "health",
+  appleWebApp: {
+    capable: true,
+    title: "EatSmart",
+    statusBarStyle: "default",
+  },
 };
 
 export default function RootLayout({
