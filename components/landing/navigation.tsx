@@ -13,7 +13,7 @@ const navLinks = [
   { name: "DASH & meals", href: "#meals" },
   { name: "Fasting", href: "#fasting" },
   { name: "Deficit", href: "#deficit" },
-  { name: "Calculator", href: "#calculator" },
+  { name: "BMR calculator", href: "#calculator" },
   { name: "Carb cycle", href: "#carb" },
   { name: "Snacks", href: "#snacks" },
 ];
