@@ -21,7 +21,7 @@ This project is licensed under the **Apache License, Version 2.0**—see [`LICEN
 ## Requirements
 
 - Node.js 18+ (22+ recommended to match tooling)
-- npm (or another compatible package manager)
+- **npm** — this repo uses `package-lock.json` (Vercel installs with npm when that file is present). You do **not** need `pnpm` unless you choose to regenerate a `pnpm-lock.yaml` yourself.
 
 ## Setup
 
