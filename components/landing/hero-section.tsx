@@ -11,7 +11,8 @@ import { HERO_VIDEO_MP4_SRC } from "@/lib/hero-video";
 import { useCountUp } from "@/hooks/use-count-up";
 import { randomHealthyApproxBeatsPerDay } from "@/lib/random-daily-heartbeats";
 
-const POSTER_HREF = "/Colorful%20Heart-Healthy%20Diet%20Poster.pdf";
+const POSTER_HREF =
+  "/Colorful%20Heart-Healthy%20Diet%20Poster%20(wecompress.com).pdf";
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);

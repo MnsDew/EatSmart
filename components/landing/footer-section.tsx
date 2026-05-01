@@ -5,7 +5,8 @@ import { ArrowUp } from "lucide-react";
 import { BRAND_MARK_SRC, brandMarkFrame } from "@/lib/brand-mark";
 import { TEAM_LINKEDIN } from "@/lib/team-links";
 
-const POSTER_HREF = "/Colorful%20Heart-Healthy%20Diet%20Poster.pdf";
+const POSTER_HREF =
+  "/Colorful%20Heart-Healthy%20Diet%20Poster%20(wecompress.com).pdf";
 
 export function FooterSection() {
   const scrollTop = () => {

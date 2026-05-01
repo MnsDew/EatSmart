@@ -19,7 +19,8 @@ const navLinks = [
   { name: "Snacks", href: "#snacks" },
 ];
 
-const POSTER_HREF = "/Colorful%20Heart-Healthy%20Diet%20Poster.pdf";
+const POSTER_HREF =
+  "/Colorful%20Heart-Healthy%20Diet%20Poster%20(wecompress.com).pdf";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
