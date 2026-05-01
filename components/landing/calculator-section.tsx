@@ -309,7 +309,7 @@ export function CalculatorSection() {
                 </div>
                 <h4 className="text-xl font-bold text-[#0b1c30] mb-2">Enter Your Details</h4>
                 <p className="text-slate-500 max-w-sm">
-                  Fill in the form on the left to calculate your personalized BMR, TDEE, and recommended calorie intake.
+                  Fill in the calculator to get your personalized BMR, TDEE, and recommended calorie intake.
                 </p>
               </div>
             )}

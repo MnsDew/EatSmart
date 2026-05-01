@@ -18,6 +18,8 @@ export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [beatsTarget, setBeatsTarget] = useState<number | null>(null);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [videoActive, setVideoActive] = useState(false);
+  const [videoNeedsGesture, setVideoNeedsGesture] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const beats = useCountUp(beatsTarget ?? 0, {
     durationMs: 2800,
@@ -53,36 +55,67 @@ export function HeroSection() {
         el.currentTime = 0.05;
       }
     };
+    const onPlaying = () => {
+      setVideoActive(true);
+      setVideoNeedsGesture(false);
+    };
     const sync = () => {
       if (mq.matches) el.pause();
       else void el.play()?.catch(() => {});
     };
-    sync();
+    // Try to autoplay. If it fails (iOS Low Power Mode, etc.), keep the video hidden
+    // so Safari doesn't show the native "play" overlay on the hero.
+    const tryAutoplay = async () => {
+      try {
+        await el.play();
+        setVideoActive(true);
+        setVideoNeedsGesture(false);
+      } catch {
+        setVideoActive(false);
+        setVideoNeedsGesture(true);
+      }
+    };
+    void tryAutoplay();
     el.addEventListener("timeupdate", loopSmooth);
+    el.addEventListener("playing", onPlaying);
     mq.addEventListener("change", sync);
     return () => {
       el.removeEventListener("timeupdate", loopSmooth);
+      el.removeEventListener("playing", onPlaying);
       mq.removeEventListener("change", sync);
     };
   }, [reduceMotion]);
+
+  const handleHeroPointerDown = () => {
+    if (reduceMotion || !videoNeedsGesture) return;
+    const el = videoRef.current;
+    if (!el) return;
+    void el.play()
+      .then(() => {
+        setVideoActive(true);
+        setVideoNeedsGesture(false);
+      })
+      .catch(() => {});
+  };
 
   return (
     <section
       id="hero"
       className="relative flex min-h-[100dvh] flex-col overflow-hidden lg:min-h-[min(92vh,900px)]"
+      onPointerDown={handleHeroPointerDown}
     >
       {/* Background: video (or still) + readability scrims */}
       <div className="absolute inset-0 z-0">
-        {reduceMotion ? (
-          <Image
-            src={siteImages.heroFeatured}
-            alt=""
-            fill
-            className="object-cover object-[center_70%]"
-            sizes="100vw"
-            priority
-          />
-        ) : (
+        {/* Always render a still backdrop so Low Power Mode doesn't show native play UI */}
+        <Image
+          src={siteImages.heroFeatured}
+          alt=""
+          fill
+          className="object-cover object-[center_70%]"
+          sizes="100vw"
+          priority
+        />
+        {!reduceMotion && (
           <video
             ref={videoRef}
             autoPlay
@@ -90,7 +123,9 @@ export function HeroSection() {
             loop
             playsInline
             preload="auto"
-              className="absolute inset-0 h-[122%] w-full translate-y-[8%] object-cover object-[center_70%] sm:h-[118%] sm:translate-y-[7%] sm:object-[center_70%] lg:h-[112%] lg:translate-y-[5%] lg:object-[center_70%] lg:scale-100 scale-[1.1] sm:scale-[1.08]"
+            className={`absolute inset-0 h-[122%] w-full translate-y-[8%] object-cover object-[center_70%] transition-opacity duration-700 sm:h-[118%] sm:translate-y-[7%] sm:object-[center_70%] lg:h-[112%] lg:translate-y-[5%] lg:object-[center_70%] lg:scale-100 scale-[1.1] sm:scale-[1.08] ${
+              videoActive ? "opacity-100" : "opacity-0"
+            }`}
             aria-hidden
           >
             <source src={HERO_VIDEO_MP4_SRC} type="video/mp4" />
