@@ -44,13 +44,26 @@ export function HeroSection() {
     const el = videoRef.current;
     if (!el || reduceMotion) return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const loopSmooth = () => {
+      // Avoid the last-frame "snap" some MP4s show on loop.
+      // Jump back slightly before the end for a more continuous feel.
+      if (!el.duration || Number.isNaN(el.duration)) return;
+      const padSeconds = 0.12;
+      if (el.currentTime >= el.duration - padSeconds) {
+        el.currentTime = 0.05;
+      }
+    };
     const sync = () => {
       if (mq.matches) el.pause();
       else void el.play()?.catch(() => {});
     };
     sync();
+    el.addEventListener("timeupdate", loopSmooth);
     mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
+    return () => {
+      el.removeEventListener("timeupdate", loopSmooth);
+      mq.removeEventListener("change", sync);
+    };
   }, [reduceMotion]);
 
   return (
@@ -83,6 +96,16 @@ export function HeroSection() {
             <source src={HERO_VIDEO_MP4_SRC} type="video/mp4" />
           </video>
         )}
+        {/* Dark overlay to improve readability over video */}
+        <div
+          className="absolute inset-0 bg-black/35 sm:bg-black/30 lg:bg-black/25"
+          aria-hidden
+        />
+        {/* Extra darkness from the bottom for contrast */}
+        <div
+          className="absolute inset-0 bg-linear-to-t from-black/55 via-black/20 to-transparent sm:from-black/50 sm:via-black/15"
+          aria-hidden
+        />
         {/* Minimal tint — video-forward; text stays on frosted card */}
         <div
           className="absolute inset-0 bg-gradient-to-r from-[#f8f9ff]/20 via-[#f8f9ff]/06 to-transparent sm:from-[#f8f9ff]/15 sm:via-transparent lg:from-[#f8f9ff]/12"
@@ -223,7 +246,7 @@ export function HeroSection() {
       </div>
 
       <div
-        className="pointer-events-none absolute bottom-0 left-0 right-0 z-[1] h-20 bg-gradient-to-t from-[#f8f9ff]/45 to-transparent sm:h-24 lg:h-28"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 z-[1] h-20 bg-linear-to-t from-black/55 via-black/20 to-transparent sm:h-24 sm:from-black/50 sm:via-black/15 lg:h-28"
         aria-hidden
       />
     </section>
